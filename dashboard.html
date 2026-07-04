@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Petugas — SIGAP LINGKUNGAN</title>
+
+    <!-- Pakai CSS yang sama dengan website user -->
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Style kecil khusus halaman admin ini saja */
+      .admin-navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: var(--hitam, #0f172a);
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+      }
+      .admin-navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        font-family: var(--font-judul, "Syne", sans-serif);
+        font-size: 15px;
+      }
+      .admin-navbar-brand span {
+        color: var(--hijau-mid, #4ade80);
+        font-size: 11px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-left: 8px;
+      }
+      .admin-back-link {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+      .admin-back-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+      body {
+        padding-top: 64px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR KHUSUS ADMIN — terpisah total dari navbar user -->
+    <header class="admin-navbar">
+      <div class="admin-navbar-brand">
+        🌿 SIGAP LINGKUNGAN <span>PANEL PETUGAS</span>
+      </div>
+      <a class="admin-back-link" href="index.html">← Lihat Situs Warga</a>
+    </header>
+
+    <!-- ===== DASHBOARD PETUGAS ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="dashboard-layout">
+        <div class="dashboard-sidebar">
+          <div class="sidebar-label">Menu Utama</div>
+          <div class="sidebar-menu">
+            <div class="sidebar-item active" onclick="switchDash(this, 'all')">
+              📋 Semua Laporan
+            </div>
+            <div class="sidebar-item" onclick="switchDash(this, 'baru')">
+              🔴 Laporan Baru
+              <span
+                id="badge-baru"
+                style="
+                  margin-left: auto;
+                  background: var(--merah);
+                  color: white;
+                  border-radius: 20px;
+                  padding: 1px 7px;
+                  font-size: 10px;
+                "
+                >0</span
+              >
+            </div>
+            <div class="sidebar-item" onclick="switchDash(this, 'proses')">
+              🔵 Sedang Diproses
+            </div>
+            <div class="sidebar-item" onclick="switchDash(this, 'selesai')">
+              ✅ Selesai
+            </div>
+            <div class="sidebar-label">Laporan</div>
+            <div class="sidebar-item" onclick="switchDash(this, 'banjir')">
+              🌊 Banjir
+            </div>
+            <div class="sidebar-item" onclick="switchDash(this, 'sampah')">
+              🗑️ Sampah
+            </div>
+            <div class="sidebar-item" onclick="switchDash(this, 'lampu')">
+              💡 Lampu Jalan
+            </div>
+            <div class="sidebar-item" onclick="switchDash(this, 'jalan')">
+              🚧 Jalan Rusak
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-content">
+          <div class="dash-header">
+            <div class="dash-title">Dashboard Petugas Dinas</div>
+            <div style="font-size: 13px; color: var(--abu-gelap)">
+              Selamat datang, <strong>Petugas Dinas PU</strong>
+            </div>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-label">Total Laporan</div>
+              <div
+                class="metric-num"
+                id="metric-total"
+                style="color: var(--hitam)"
+              >
+                0
+              </div>
+              <div class="metric-change metric-up">Data real-time</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Menunggu Tindak</div>
+              <div
+                class="metric-num"
+                id="metric-menunggu"
+                style="color: var(--merah)"
+              >
+                0
+              </div>
+              <div class="metric-change metric-down">Perlu ditindaklanjuti</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Sedang Diproses</div>
+              <div
+                class="metric-num"
+                id="metric-diproses"
+                style="color: var(--biru)"
+              >
+                0
+              </div>
+              <div class="metric-change metric-up">Sedang ditangani</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Selesai Ditangani</div>
+              <div
+                class="metric-num"
+                id="metric-selesai"
+                style="color: var(--hijau)"
+              >
+                0
+              </div>
+              <div class="metric-change metric-up">Sudah tuntas</div>
+            </div>
+          </div>
+
+          <div class="dash-table-card">
+            <div class="dash-table-header">
+              <div class="dash-table-title" id="dash-table-title">
+                Laporan Masuk
+              </div>
+              <input
+                type="text"
+                class="dash-search"
+                id="dash-search-input"
+                placeholder="🔍 Cari laporan..."
+                oninput="searchDashboard(this.value)"
+              />
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Kategori</th>
+                  <th>Masalah</th>
+                  <th>Lokasi</th>
+                  <th>Upvote</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="dash-tbody">
+                <tr>
+                  <td
+                    colspan="7"
+                    style="
+                      text-align: center;
+                      padding: 24px;
+                      color: var(--abu-gelap);
+                    "
+                  >
+                    ⏳ Memuat data laporan...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+  </body>
+</html>

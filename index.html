@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIGAP LINGKUNGAN — Kota Bengkulu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <div class="navbar-logo">🌿</div>
+        <div class="navbar-name">SIGAP <span>LINGKUNGAN</span></div>
+      </div>
+      <div class="navbar-nav">
+        <button class="nav-btn active" onclick="showPage('home')">
+          Beranda
+        </button>
+        <button class="nav-btn" onclick="showPage('peta')">Peta</button>
+        <button class="nav-btn" onclick="showPage('tracking')">Tracking</button>
+      </div>
+      <button class="nav-cta" onclick="showPage('laporan')">
+        + Lapor Sekarang
+      </button>
+    </nav>
+
+    <!-- ===== HOME PAGE ===== -->
+    <div class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-badge">📍 Kota Bengkulu</div>
+        <h1>Laporkan Masalah<br /><span>Lingkungan Jalan</span></h1>
+        <p>
+          Platform digital resmi pelaporan masalah lingkungan Kota Bengkulu.
+          Foto, kirim, dan pantau penanganan langsung dari genggaman tangan.
+        </p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showPage('laporan')">
+            📸 Lapor Sekarang
+          </button>
+          <button class="btn-secondary" onclick="showPage('peta')">
+            🗺️ Lihat Peta Masalah
+          </button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Masalah yang Bisa Dilaporkan</div>
+        <div class="section-sub">
+          Klik kategori untuk langsung membuat laporan
+        </div>
+        <div class="masalah-grid">
+          <div class="masalah-card" onclick="pilihKategori('banjir')">
+            <div class="masalah-icon">🌊</div>
+            <div class="masalah-title">Banjir</div>
+            <div class="masalah-desc">
+              Genangan air, drainase tersumbat, luapan sungai yang membahayakan
+              warga.
+            </div>
+          </div>
+          <div class="masalah-card" onclick="pilihKategori('sampah')">
+            <div class="masalah-icon">🗑️</div>
+            <div class="masalah-title">Sampah & Drainase</div>
+            <div class="masalah-desc">
+              Tumpukan sampah liar, drainase mampet, tempat pembuangan tak
+              resmi.
+            </div>
+          </div>
+          <div class="masalah-card" onclick="pilihKategori('lampu')">
+            <div class="masalah-icon">💡</div>
+            <div class="masalah-title">Lampu Jalan Mati</div>
+            <div class="masalah-desc">
+              Ruas jalan gelap berhari-hari, rawan kecelakaan dan kriminalitas
+              malam.
+            </div>
+          </div>
+          <div class="masalah-card" onclick="pilihKategori('jalan')">
+            <div class="masalah-icon">🚧</div>
+            <div class="masalah-title">Jalan Rusak</div>
+            <div class="masalah-desc">
+              Jalan berlubang, aspal terkelupas, trotoar rusak yang membahayakan
+              pengendara.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="
+          background: white;
+          border-top: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+        "
+      >
+        <div class="section">
+          <div class="section-title">Fitur Unggulan</div>
+          <div class="section-sub">
+            Sistem terintegrasi dari laporan hingga penanganan
+          </div>
+          <div class="fitur-grid">
+            <div class="fitur-card">
+              <div class="fitur-num">01</div>
+              <div class="fitur-body">
+                <h4>Form Laporan Cepat</h4>
+                <p>
+                  Foto + lokasi GPS + kategori terkirim dalam 30 detik langsung
+                  ke dinas terkait.
+                </p>
+              </div>
+            </div>
+            <div class="fitur-card">
+              <div class="fitur-num">02</div>
+              <div class="fitur-body">
+                <h4>Peta Masalah Live</h4>
+                <p>
+                  Semua laporan muncul di peta interaktif sehingga dinas bisa
+                  lihat sebaran & prioritas.
+                </p>
+              </div>
+            </div>
+            <div class="fitur-card">
+              <div class="fitur-num">03</div>
+              <div class="fitur-body">
+                <h4>Tracking Status</h4>
+                <p>
+                  Warga pantau apakah laporan sudah diterima, diproses, atau
+                  selesai ditangani.
+                </p>
+              </div>
+            </div>
+            <div class="fitur-card">
+              <div class="fitur-num">04</div>
+              <div class="fitur-body">
+                <h4>Notifikasi WhatsApp</h4>
+                <p>
+                  Otomatis dikirim ke pelapor setiap kali status laporan
+                  berubah.
+                </p>
+              </div>
+            </div>
+            <div class="fitur-card">
+              <div class="fitur-num">05</div>
+              <div class="fitur-body">
+                <h4>Dashboard Petugas</h4>
+                <p>
+                  Petugas dinas kelola laporan masuk, update status, upload
+                  bukti penanganan.
+                </p>
+              </div>
+            </div>
+            <div class="fitur-card">
+              <div class="fitur-num">06</div>
+              <div class="fitur-body">
+                <h4>Upvote Laporan</h4>
+                <p>
+                  Warga lain konfirmasi masalah yang sama — semakin banyak
+                  upvote, semakin prioritas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Laporan Terbaru</div>
+        <div class="section-sub">Masalah yang baru dilaporkan warga</div>
+        <div class="laporan-list">
+          <div class="laporan-item">
+            <div class="laporan-cat" style="background: #dbeafe">🌊</div>
+            <div class="laporan-info">
+              <div class="laporan-title">Banjir di Sekitaran Rawa Makmur</div>
+              <div class="laporan-meta">
+                📍 Kecamatan. Muara Bangka Hulu · 2 jam lalu
+              </div>
+            </div>
+            <span class="laporan-status status-proses">Diproses</span>
+            <button class="upvote-btn" onclick="upvote(this)">
+              👍 <span>12</span>
+            </button>
+          </div>
+          <div class="laporan-item">
+            <div class="laporan-cat" style="background: #fef3c7">🗑️</div>
+            <div class="laporan-info">
+              <div class="laporan-title">
+                Tumpukan sampah di Pasar Minggu sudut kiri
+              </div>
+              <div class="laporan-meta">
+                📍 Kecamatan. Ratu Samban · 5 jam lalu
+              </div>
+            </div>
+            <span class="laporan-status status-baru">Menunggu</span>
+            <button class="upvote-btn" onclick="upvote(this)">
+              👍 <span>7</span>
+            </button>
+          </div>
+          <div class="laporan-item">
+            <div class="laporan-cat" style="background: #fef9c3">💡</div>
+            <div class="laporan-info">
+              <div class="laporan-title">
+                3 lampu jalan mati di Jembatan Kota Tua
+              </div>
+              <div class="laporan-meta">
+                📍 Kecamatan. Sungai Serut · Kemarin
+              </div>
+            </div>
+            <span class="laporan-status status-selesai">Selesai ✓</span>
+            <button class="upvote-btn" onclick="upvote(this)">
+              👍 <span>24</span>
+            </button>
+          </div>
+          <div class="laporan-item">
+            <div class="laporan-cat" style="background: #fce7f3">🚧</div>
+            <div class="laporan-info">
+              <div class="laporan-title">
+                Jalan berlubang besar di Pasar Pendati
+              </div>
+              <div class="laporan-meta">
+                📍 Kecamatan. Pondok Kelapa · 2 hari lalu
+              </div>
+            </div>
+            <span class="laporan-status status-proses">Diproses</span>
+            <button class="upvote-btn" onclick="upvote(this)">
+              👍 <span>31</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FORM LAPORAN ===== -->
+    <div class="page" id="page-laporan">
+      <div class="form-page">
+        <div class="form-header">
+          <h2>📸 Buat Laporan Baru</h2>
+          <p>
+            Isi formulir berikut untuk melaporkan masalah lingkungan. Laporan
+            akan langsung terkirim ke dinas terkait.
+          </p>
+        </div>
+        <div class="form-card">
+          <!-- KATEGORI -->
+          <div class="form-group">
+            <label class="form-label">Kategori Masalah <span>*</span></label>
+            <div class="kategori-grid">
+              <div
+                class="kategori-option"
+                id="kat-banjir"
+                onclick="selectKat('banjir')"
+              >
+                <div class="kat-icon">🌊</div>
+                <div class="kat-label">Banjir</div>
+              </div>
+              <div
+                class="kategori-option"
+                id="kat-sampah"
+                onclick="selectKat('sampah')"
+              >
+                <div class="kat-icon">🗑️</div>
+                <div class="kat-label">Sampah & Drainase</div>
+              </div>
+              <div
+                class="kategori-option"
+                id="kat-lampu"
+                onclick="selectKat('lampu')"
+              >
+                <div class="kat-icon">💡</div>
+                <div class="kat-label">Lampu Jalan</div>
+              </div>
+              <div
+                class="kategori-option"
+                id="kat-jalan"
+                onclick="selectKat('jalan')"
+              >
+                <div class="kat-icon">🚧</div>
+                <div class="kat-label">Jalan Rusak</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- JUDUL -->
+          <div class="form-group">
+            <label class="form-label">Judul Laporan <span>*</span></label>
+            <input
+              type="text"
+              class="form-input"
+              id="inp-judul"
+              placeholder="Contoh: Jalan berlubang besar di depan SD 3 Bengkulu"
+            />
+          </div>
+
+          <!-- DESKRIPSI -->
+          <div class="form-group">
+            <label class="form-label">Deskripsi Masalah <span>*</span></label>
+            <textarea
+              class="form-textarea"
+              id="inp-desc"
+              placeholder="Jelaskan masalah secara detail — kapan terjadi, seberapa parah, dampak ke warga sekitar..."
+            ></textarea>
+          </div>
+
+          <!-- FOTO -->
+          <div class="form-group">
+            <label class="form-label">Foto Bukti <span>*</span></label>
+            <div
+              class="foto-upload"
+              id="foto-upload"
+              onclick="document.getElementById('foto-input').click()"
+            >
+              <div class="foto-upload-icon">📷</div>
+              <div class="foto-upload-text">
+                <strong>Klik untuk pilih foto</strong><br />atau seret foto ke
+                sini · JPG, PNG max 10MB
+              </div>
+            </div>
+            <div class="foto-preview" id="foto-preview">
+              <img id="foto-img" src="" alt="Preview" />
+            </div>
+            <input
+              type="file"
+              id="foto-input"
+              accept="image/*"
+              style="display: none"
+              onchange="previewFoto(this)"
+            />
+          </div>
+
+          <!-- LOKASI GPS -->
+          <div class="form-group">
+            <label class="form-label">Lokasi GPS <span>*</span></label>
+            <button class="gps-btn" id="gps-btn" onclick="getGPS()">
+              📍 Ambil Lokasi Otomatis
+            </button>
+            <div class="gps-result" id="gps-result"></div>
+          </div>
+
+          <!-- NAMA & HP -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+            <div class="form-group">
+              <label class="form-label">Nama Pelapor <span>*</span></label>
+              <input
+                type="text"
+                class="form-input"
+                id="inp-nama"
+                placeholder="Nama lengkap"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nomor WhatsApp <span>*</span></label>
+              <input
+                type="tel"
+                class="form-input"
+                id="inp-wa"
+                placeholder="08xxxxxxxxxx"
+              />
+            </div>
+          </div>
+
+          <button class="submit-btn" onclick="submitLaporan()">
+            🚀 Kirim Laporan Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PETA ===== -->
+    <div class="page" id="page-peta">
+      <div class="peta-page">
+        <div class="peta-toolbar">
+          <h3>🗺️ Peta Masalah Live</h3>
+          <button
+            class="filter-chip active"
+            onclick="filterPeta(this, 'semua')"
+          >
+            Semua
+          </button>
+          <button class="filter-chip" onclick="filterPeta(this, 'banjir')">
+            🌊 Banjir
+          </button>
+          <button class="filter-chip" onclick="filterPeta(this, 'sampah')">
+            🗑️ Sampah
+          </button>
+          <button class="filter-chip" onclick="filterPeta(this, 'lampu')">
+            💡 Lampu
+          </button>
+          <button class="filter-chip" onclick="filterPeta(this, 'jalan')">
+            🚧 Jalan
+          </button>
+        </div>
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <!-- ===== TRACKING ===== -->
+    <div class="page" id="page-tracking">
+      <div class="tracking-page">
+        <div style="margin-bottom: 32px">
+          <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 8px">
+            🔍 Tracking Laporan
+          </h2>
+          <p style="font-size: 14px; color: var(--abu-gelap)">
+            Masukkan nomor ID laporan untuk memantau status penanganan.
+          </p>
+        </div>
+        <div class="tracking-search">
+          <input
+            type="text"
+            class="tracking-input"
+            id="track-input"
+            placeholder="Contoh: SGL-2024-0001"
+            value="SGL-2024-0042"
+          />
+          <button class="tracking-btn" onclick="cariLaporan()">
+            Cari Status
+          </button>
+        </div>
+        <div class="tracking-result" id="tracking-result" style="display: none">
+          <div class="tracking-header">
+            <div class="tracking-id">ID: SGL-2024-0042</div>
+            <div class="tracking-title">
+              Jalan berlubang besar di Jl. Suprapto depan SPBU
+            </div>
+            <div class="tracking-meta">
+              📍 Kel. Penurunan · Dilaporkan 25 Apr 2026 · 🌊 Jalan Rusak
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot dot-done">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-label">Laporan Diterima</div>
+                <div class="timeline-date">25 Apr 2026, 09:15</div>
+                <div class="timeline-note">
+                  Laporan masuk ke sistem dan diteruskan ke Dinas PU Kota
+                  Bengkulu.
+                </div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot dot-done">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-label">Verifikasi Lapangan</div>
+                <div class="timeline-date">26 Apr 2026, 13:30</div>
+                <div class="timeline-note">
+                  Petugas telah melakukan pengecekan lapangan. Kerusakan
+                  dikonfirmasi kategori sedang.
+                </div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot dot-active">🔄</div>
+              <div class="timeline-content">
+                <div class="timeline-label" style="color: var(--hijau)">
+                  Dalam Perbaikan
+                </div>
+                <div class="timeline-date">
+                  28 Apr 2026 — Sedang berlangsung
+                </div>
+                <div class="timeline-note">
+                  Tim perbaikan jalan sudah diterjunkan. Estimasi selesai 2 hari
+                  ke depan.
+                </div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot dot-wait">⏳</div>
+              <div class="timeline-content">
+                <div class="timeline-label" style="color: var(--abu-gelap)">
+                  Selesai
+                </div>
+                <div class="timeline-date">Menunggu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="success-modal" id="success-modal">
+      <div class="success-card">
+        <div class="success-icon">🎉</div>
+        <h3>Laporan Terkirim!</h3>
+        <p>
+          Laporan kamu sudah diterima dan akan segera ditindaklanjuti oleh dinas
+          terkait.
+        </p>
+        <div class="success-id" id="success-id">SGL-2024-0248</div>
+        <p style="font-size: 12px">
+          Simpan ID ini untuk tracking status laporan kamu via WhatsApp.
+        </p>
+        <button
+          style="
+            width: 100%;
+            padding: 12px;
+            background: var(--hijau);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+          "
+          onclick="closeModal()"
+        >
+          Oke, Pantau Status ›
+        </button>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
