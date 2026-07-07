@@ -44,7 +44,7 @@ async function loadDashboard(filter) {
   currentFilter = filter;
 
   try {
-    var response = await fetch("mysql-production-3747.up.railway.app");
+    var response = await fetch("sigap-backend-production-b356.up.railway.app");
     var hasil = await response.json();
     if (!hasil.success) return;
 
@@ -191,7 +191,7 @@ async function ubahStatusDB(selectEl, id) {
 
   try {
     var response = await fetch(
-      "mysql-production-3747.up.railway.app" + id + "/status",
+      "sigap-backend-production-b356.up.railway.app" + id + "/status",
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
