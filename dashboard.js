@@ -44,7 +44,7 @@ async function loadDashboard(filter) {
   currentFilter = filter;
 
   try {
-    var response = await fetch("http://localhost:8000/api/laporan");
+    var response = await fetch("mysql-production-3747.up.railway.app");
     var hasil = await response.json();
     if (!hasil.success) return;
 
@@ -63,12 +63,18 @@ async function loadDashboard(filter) {
     setText("badge-baru", totalMenunggu);
 
     // === Filter data sesuai menu sidebar yang diklik ===
-    var statusFilterMap = { baru: "menunggu", proses: "diproses", selesai: "selesai" };
+    var statusFilterMap = {
+      baru: "menunggu",
+      proses: "diproses",
+      selesai: "selesai",
+    };
     var kategoriList = ["banjir", "sampah", "lampu", "jalan"];
 
     var dataTampil = semuaData;
     if (statusFilterMap[filter]) {
-      dataTampil = semuaData.filter((l) => l.status === statusFilterMap[filter]);
+      dataTampil = semuaData.filter(
+        (l) => l.status === statusFilterMap[filter],
+      );
     } else if (kategoriList.includes(filter)) {
       dataTampil = semuaData.filter((l) => l.kategori === filter);
     }
@@ -79,7 +85,8 @@ async function loadDashboard(filter) {
     dashboardDataCache = dataTampil;
 
     var judulEl = document.getElementById("dash-table-title");
-    if (judulEl) judulEl.textContent = judulFilterMap[filter] || "Laporan Masuk";
+    if (judulEl)
+      judulEl.textContent = judulFilterMap[filter] || "Laporan Masuk";
 
     renderDashboardTable(dataTampil);
   } catch (error) {
@@ -184,7 +191,7 @@ async function ubahStatusDB(selectEl, id) {
 
   try {
     var response = await fetch(
-      "http://localhost:8000/api/laporan/" + id + "/status",
+      "mysql-production-3747.up.railway.app" + id + "/status",
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

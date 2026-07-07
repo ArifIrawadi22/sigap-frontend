@@ -177,7 +177,7 @@ async function submitLaporan() {
       : "";
 
   try {
-    var response = await fetch("http://localhost:8000/api/laporan", {
+    var response = await fetch("mysql-production-3747.up.railway.app", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -240,7 +240,7 @@ async function cariLaporan() {
   }
 
   try {
-    var response = await fetch("http://localhost:8000/api/laporan/" + id);
+    var response = await fetch("mysql-production-3747.up.railway.app" + id);
     var hasil = await response.json();
 
     if (!hasil.success) {
@@ -330,7 +330,7 @@ async function initMap() {
   markerLayer.clearLayers();
 
   try {
-    var response = await fetch("http://localhost:8000/api/laporan");
+    var response = await fetch("mysql-production-3747.up.railway.app");
     var hasil = await response.json();
     if (!hasil.success) return;
 
@@ -394,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // =============================================
 async function ambilLaporanDariDB() {
   try {
-    var response = await fetch("http://localhost:8000/api/laporan");
+    var response = await fetch("mysql-production-3747.up.railway.app");
     var hasil = await response.json();
 
     if (hasil.success && hasil.data.length > 0) {
