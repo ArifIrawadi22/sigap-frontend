@@ -3,6 +3,9 @@
    Terhubung ke API Laravel yang sama dengan website user
    ============================================================ */
 
+const API_URL =
+  "https://sigap-backend-production-b356.up.railway.app/api/laporan";
+
 let currentFilter = "all"; // filter sidebar yang sedang aktif
 let dashboardDataCache = []; // data hasil filter sidebar (sebelum di-search)
 
@@ -44,7 +47,7 @@ async function loadDashboard(filter) {
   currentFilter = filter;
 
   try {
-    var response = await fetch("sigap-backend-production-b356.up.railway.app");
+    var response = await fetch(API_URL);
     var hasil = await response.json();
     if (!hasil.success) return;
 
@@ -190,14 +193,11 @@ async function ubahStatusDB(selectEl, id) {
   if (!status) return;
 
   try {
-    var response = await fetch(
-      "sigap-backend-production-b356.up.railway.app" + id + "/status",
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: status }),
-      },
-    );
+    var response = await fetch(API_URL + id + "/status", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: status }),
+    });
     var hasil = await response.json();
     if (hasil.success) {
       loadDashboard(currentFilter); // refresh dengan filter sidebar yang sama

@@ -1,3 +1,6 @@
+const API_URL =
+  "https://sigap-backend-production-b356.up.railway.app/api/laporan";
+
 let lokasiLat = null;
 let lokasiLng = null;
 let lokasiNama = ""; // nama lokasi hasil deteksi otomatis dari GPS
@@ -177,7 +180,7 @@ async function submitLaporan() {
       : "";
 
   try {
-    var response = await fetch("sigap-backend-production-b356.up.railway.app", {
+    var response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -240,9 +243,7 @@ async function cariLaporan() {
   }
 
   try {
-    var response = await fetch(
-      "sigap-backend-production-b356.up.railway.app" + id,
-    );
+    var response = await fetch(API_URL + id);
     var hasil = await response.json();
 
     if (!hasil.success) {
@@ -332,7 +333,7 @@ async function initMap() {
   markerLayer.clearLayers();
 
   try {
-    var response = await fetch("sigap-backend-production-b356.up.railway.app");
+    var response = await fetch(API_URL);
     var hasil = await response.json();
     if (!hasil.success) return;
 
@@ -396,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // =============================================
 async function ambilLaporanDariDB() {
   try {
-    var response = await fetch("sigap-backend-production-b356.up.railway.app");
+    var response = await fetch(API_URL);
     var hasil = await response.json();
 
     if (hasil.success && hasil.data.length > 0) {
