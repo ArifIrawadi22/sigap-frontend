@@ -243,7 +243,7 @@ async function cariLaporan() {
   }
 
   try {
-    var response = await fetch(API_URL + id);
+    var response = await fetch(API_URL + "/" + id);
     var hasil = await response.json();
 
     if (!hasil.success) {
