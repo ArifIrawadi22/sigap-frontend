@@ -193,7 +193,7 @@ async function ubahStatusDB(selectEl, id) {
   if (!status) return;
 
   try {
-    var response = await fetch(API_URL + id + "/status", {
+    var response = await fetch(API_URL + "/" + id + "/status", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: status }),
